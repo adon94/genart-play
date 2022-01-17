@@ -1,11 +1,8 @@
 const svg1 = document.createElementNS("http://www.w3.org/2000/svg", "svg");
 
-// const size = 2700; // document.body.clientWidth;
 const height = 24;
 const width = 24;
-// const center = size/2;
 let blockSize = 1;
-let maxBlocksLine = 8;
 let numberOfBlocks = 70;
 let maxBlocks = 40;
 let sl = [81, 69];
@@ -16,16 +13,15 @@ svg1.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
 svg1.setAttribute('fill', '#fff');
 
 let blocks = []
-let pathDistance = 0
 
 function rando(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-function distanceTo(a,b,c,d) {
-  const distance = Math.sqrt((Math.pow(c-a,2))+(Math.pow(d-b,2)))
-  return distance;
-}
+// function distanceTo(a,b,c,d) {
+//   const distance = Math.sqrt((Math.pow(c-a,2))+(Math.pow(d-b,2)))
+//   return distance;
+// }
 
 function toImage() {
   const xml = new XMLSerializer().serializeToString(svg1);
@@ -38,29 +34,29 @@ function toImage() {
   img.src = image64;
 }
 
-function animate() {
-    setInterval(() => {
-      blocks.forEach((block, i) => {
-        const blockEl = document.getElementById(`block-${i}`);
-        const { hue } = blocks[i];
-        const newHue = hue < 340 ? hue + 20 : (360 - hue);
-        if (i === 0) console.log(newHue) 
+// function animate() {
+//     setInterval(() => {
+//       blocks.forEach((block, i) => {
+//         const blockEl = document.getElementById(`block-${i}`);
+//         const { hue } = blocks[i];
+//         const newHue = hue < 340 ? hue + 20 : (360 - hue);
+//         if (i === 0) console.log(newHue) 
 
-        blockEl.setAttribute('fill', `hsl(${newHue}, ${sl[0]}%, ${sl[1]}%)`)
-        blocks[i].hue = newHue;
-    })
-    }, 1000)
-    // anime({
-    //   targets: `.block-${i}`,
-    //   // strokeDashoffset: [anime.setDashoffset, 1500],
-    //   fill: `hsl(${360 - block.hue}, 100%, 100%)`,
-    //   easing: 'linear',
-    //   duration: 3000, // was 600000
-    //   // delay: function(el, i) { return i * 250 },
-    //   direction: 'alternate',
-    //   loop: true,
-    // });
-}
+//         blockEl.setAttribute('fill', `hsl(${newHue}, ${sl[0]}%, ${sl[1]}%)`)
+//         blocks[i].hue = newHue;
+//     })
+//     }, 1000)
+//     // anime({
+//     //   targets: `.block-${i}`,
+//     //   // strokeDashoffset: [anime.setDashoffset, 1500],
+//     //   fill: `hsl(${360 - block.hue}, 100%, 100%)`,
+//     //   easing: 'linear',
+//     //   duration: 3000, // was 600000
+//     //   // delay: function(el, i) { return i * 250 },
+//     //   direction: 'alternate',
+//     //   loop: true,
+//     // });
+// }
 
 const rect = () => document.createElementNS('http://www.w3.org/2000/svg', 'rect');
 
@@ -166,12 +162,12 @@ function drawBlock() {
   let tryAgain = false;
   for (let i = 0; i < blocks.length - 1; i++) {
     const oldBlock = blocks[i];
-    if (block.x == oldBlock.x && block.y == oldBlock.y) {
+    if (block.x === oldBlock.x && block.y === oldBlock.y) {
       tryAgain = true;
       break;
     }
   }
-  if (block.x == 5 || block.x == width - 5 || block.y == 5 || block.y == height - 5) {
+  if (block.x === 5 || block.x === width - 5 || block.y === 5 || block.y === height - 5) {
     tryAgain = true;
   }
   if (tryAgain && count < 200) {
@@ -185,11 +181,7 @@ function drawBlock() {
 
 function drawRandom() {
   svg1.innerHTML = '';
-  // svg1.appendChild(background);
-  pathDistance = 0;
   blocks = [];
-  // const length = rando(5, 1000);
-  const visual = document.getElementById('visual');
 
   const rarityScore = rando(0, 99);
   let a = 0;

@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import { useEffect } from 'react';
 import { drawRandom } from './artEngine';
@@ -14,10 +13,10 @@ function App() {
         <div onClick={() => drawRandom()} id="svg54583"></div>
       </div>
       <nav id="control" class="nav-bottom">
-        <a id="button-instant" class="active" onClick={() => drawRandom()}>GENERATE</a>
+        <button id="button-instant" class="active" onClick={() => drawRandom()}>GENERATE</button>
       </nav>
       <div id="visual" class="card">
-        <img />
+        <img alt="svg-img" />
       </div>
     </div>
   );
