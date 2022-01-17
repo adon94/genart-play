@@ -7,17 +7,16 @@ function App() {
     drawRandom();
   }, [])
   return (
-    <div class="container">
-      <div id="visual" class="card">
-        <h3>SVG</h3>
+    <div className="container">
+      <div id="visual" className="card">
         <div onClick={() => drawRandom()} id="svg54583"></div>
       </div>
-      <nav id="control" class="nav-bottom">
-        <button id="button-instant" class="active" onClick={() => drawRandom()}>GENERATE</button>
+      <nav id="control" className="nav-bottom">
+        <button id="button-instant" className="button" onClick={() => drawRandom()}>GENERATE</button>
       </nav>
-      <div id="visual" class="card">
+      {/* <div id="visual" class="card">
         <img alt="svg-img" />
-      </div>
+      </div> */}
     </div>
   );
 }

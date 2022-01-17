@@ -4,7 +4,7 @@ const height = 24;
 const width = 24;
 let blockSize = 1;
 let numberOfBlocks = 70;
-let maxBlocks = 40;
+let maxBlocks = 70;
 let sl = [81, 69];
 const slOpts = [[81, 69], [100, 50]]; // saturation & lightness
 svg1.setAttribute('viewBox', `0 0 ${width} ${height}`);
@@ -23,16 +23,16 @@ function rando(min, max) {
 //   return distance;
 // }
 
-function toImage() {
-  const xml = new XMLSerializer().serializeToString(svg1);
-  const svg64 = btoa(xml);
-  const b64Start = 'data:image/svg+xml;base64,';
+// function toImage() {
+//   const xml = new XMLSerializer().serializeToString(svg1);
+//   const svg64 = btoa(xml);
+//   const b64Start = 'data:image/svg+xml;base64,';
 
-  // prepend a "header"
-  const image64 = b64Start + svg64;
-  const img = document.querySelector('img');
-  img.src = image64;
-}
+//   // prepend a "header"
+//   const image64 = b64Start + svg64;
+//   const img = document.querySelector('img');
+//   img.src = image64;
+// }
 
 // function animate() {
 //     setInterval(() => {
@@ -129,7 +129,7 @@ function drawSvg() {
     svg1.appendChild(blck);
   });
   document.getElementById("svg54583").appendChild(svg1);
-  toImage();
+  // toImage();
   // animate();
 }
 
