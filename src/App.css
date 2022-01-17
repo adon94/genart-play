@@ -1,38 +1,90 @@
-.App {
-  text-align: center;
+html, body {
+  background: #000;
+  font-family: "Montserrat", sans-serif;
+  height: 100%;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+img {
+  display: block;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+#svg54583 {
+  z-index: 10;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+canvas {
+  height: 100%;
+  width: 100%;
+}
+
+.nav-bottom {
+  align-content: center;
   align-items: center;
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  padding: 0.5em;
+  text-align: center;
+  width: 100%;
 }
 
-.App-link {
-  color: #61dafb;
+.container {
+  align-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  @media screen and (max-width: 600px) {
+    align-content: space-between;
+  }
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+#visual {
+  position: relative;
+  font-size: 0.8em;
+  height: 100vmin;
+  width: 100vmin;
+  @media screen and (max-width: 600px) {
+    width: 100vmin;
   }
-  to {
-    transform: rotate(360deg);
+}
+
+.show,
+.show-visual {
+  display: block;
+}
+
+nav a {
+  background-color: #000;
+  border: solid 1px gold;
+  font-size: 0.5em;
+  margin: 0.5em;
+  padding: 1em 1.5em;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.1s;
+  letter-spacing: 7px;
+  font-weight: 100;
+  @media screen and (max-width: 600px) {
+    padding: 1em 1.5em;
+    font-size: 0.8em;
+    margin: 0.5em;
+    margin-bottom: 80px;
   }
+}
+
+nav a:hover {
+  background-color: #000;
+  border: solid 1px gold;
+}
+
+nav a.active {
+  background-color: #000;
+  border: solid 1px gold;
 }
