@@ -4,9 +4,17 @@ const height = 24;
 const width = 24;
 let blockSize = 1;
 let numberOfBlocks = 70;
-let maxBlocks = 70;
-let sl = [81, 69];
+let maxBlocks = 120;
+// let sl = [81, 69];
 const slOpts = [[81, 69], [100, 50]]; // saturation & lightness
+
+const pallets = [
+  ['?', 81, 69],
+  ['?', 100, 50],
+  [235, 0, '?'],
+  [rando(1, 360), '?', '?'],
+];
+let pallet = pallets[2];
 svg1.setAttribute('viewBox', `0 0 ${width} ${height}`);
 svg1.setAttribute("version", "1.1");
 svg1.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
@@ -18,10 +26,11 @@ function rando(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-// function distanceTo(a,b,c,d) {
-//   const distance = Math.sqrt((Math.pow(c-a,2))+(Math.pow(d-b,2)))
-//   return distance;
-// }
+function distanceTo({ x: a, y: b },{ x: c, y: d }) {
+  const distance = Math.sqrt((Math.pow(c-a,2))+(Math.pow(d-b,2)))
+  console.log(distance);
+  return distance;
+}
 
 // function toImage() {
 //   const xml = new XMLSerializer().serializeToString(svg1);
@@ -63,22 +72,32 @@ const rect = () => document.createElementNS('http://www.w3.org/2000/svg', 'rect'
 const eyeColors = [
   { lid: '#a76d2c', side: '#d39c5f'},
   { lid: '#ae2b7b', side: '#c0408f'},
+  { lid: '#76bdbd', side: '#9be0e0', name: 'alien'},
 ];
 
 const randoEyes = () => {
-  return eyeColors[rando(0, eyeColors.length - 1)];
+  return eyeColors[rando(0, eyeColors.length - 2)];
 };
 
 let eyeColor = randoEyes();
 
-function setEyelid(block) {
+function setEyelid(block, right, isAlien) {
   const eyelid = rect();
   eyelid.setAttribute('x', block.x);
   eyelid.setAttribute('y', block.y - blockSize);
-  eyelid.setAttribute('width', blockSize * 2);
+  eyelid.setAttribute('width', blockSize * (isAlien ? 1 : 2));
   eyelid.setAttribute('height', blockSize);
-  eyelid.setAttribute('fill', eyeColor.lid);
+  eyelid.setAttribute('fill', (isAlien && right) ? 'black' : eyeColor.lid);
   svg1.appendChild(eyelid);
+  if (isAlien) {
+    const eyelid = rect();
+    eyelid.setAttribute('x', block.x + 1);
+    eyelid.setAttribute('y', block.y - blockSize);
+    eyelid.setAttribute('width', blockSize);
+    eyelid.setAttribute('height', blockSize);
+    eyelid.setAttribute('fill', right ? eyeColor.lid : 'black');
+    svg1.appendChild(eyelid);
+  }
 }
 
 function setSide(block, right) {
@@ -99,9 +118,14 @@ function drawSvg() {
   bg.setAttribute('fill', '#fff');
   svg1.appendChild(bg);
   const index1 = rando(0, blocks.length - 1);
+  let tryCount = 0;
   const setIndex2 = () => {
     const i2 = rando(0, blocks.length - 1);
-    if (i2 === index1) return setTimeout(setIndex2, 0);
+    if ((i2 === index1 || distanceTo(blocks[i2], blocks[index1]) <= 2) && tryCount < 30) {
+      tryCount++;
+      console.log(tryCount === 29)
+      return setTimeout(() => setIndex2(), 0);
+    }
     return i2;
   };
   const index2 = setIndex2();
@@ -109,23 +133,23 @@ function drawSvg() {
   const eye1 = blocks.splice(index1, 1);
   const eye2 = blocks.splice(index2, 1);
   blocks = blocks.concat([{ ...eye1[0], eye }]).concat([{ ...eye2[0], eye }]);
-  console.log(blocks[blocks.length - 1]);
-  console.log(blocks[blocks.length - 2]);
   const right = rando(0, 1);
+  const isAlien = rando(0,2) === 0;
+  if (isAlien) eyeColor = eyeColors[2];
   
   blocks.forEach((block, i) => {
-  const blck = rect()
+    const blck = rect()
     blck.setAttribute('x', block.x);
     blck.setAttribute('y', block.y);
     blck.setAttribute('width', blockSize);
     blck.setAttribute('height', blockSize);
     blck.setAttribute('id', `block-${i}`);
-    blck.setAttribute('fill', `hsl(${block.hue}, ${sl[0]}%, ${sl[1]}%)`)
-    if (block.eye && block.x) {
-      blck.setAttribute('fill', right ? eyeColor.side : 'black');
-      setEyelid(block);
-      setSide(block, right);
-    }
+    blck.setAttribute('fill', `hsl(${block.hue}, ${block.sat}%, ${block.light}%)`);
+    // if (block.eye && block.x) {
+    //   blck.setAttribute('fill', right ? eyeColor.side : 'black');
+    //   setEyelid(block, right, isAlien);
+    //   setSide(block, right);
+    // }
     svg1.appendChild(blck);
   });
   document.getElementById("svg54583").appendChild(svg1);
@@ -136,12 +160,19 @@ function drawSvg() {
 let count = 0
 
 function getBlockData() {
-  let x, y, hue;
+  let x, y, hue, sat, light;
+  const vHue = pallet[0] === '?';
+  const vSat = pallet[1] === '?';
+  const vLight = pallet[2] === '?';
   if (blocks.length === 0) {
     x = rando(5, width - 6);
     y = rando(5, height - 6);
-    hue = rando(0, 359);
-    return { x, y, hue };
+
+    hue = vHue ? rando(1, 360) : pallet[0];
+    sat = vSat ? rando(1, 100) : pallet[1];
+    light = vLight ? rando(0, 100) : pallet[2];
+
+    return { x, y, hue, sat, light };
   }
 
   const lastBlock = blocks[blocks.length - 1];
@@ -149,9 +180,11 @@ function getBlockData() {
   const yOptions = [lastBlock.y + blockSize, lastBlock.y - blockSize, lastBlock.y];
   x = xOptions[rando(0, 1)]; // rando(0, 1) ? lastBlock.x + blockSize : lastBlock.x - blockSize;
   y = yOptions[rando(0, 1)]; // rando(0, 1) ? lastBlock.y + blockSize : lastBlock.y - blockSize;
-  hue = lastBlock.hue + 20;
+  hue = !vHue ? pallet[0] : lastBlock.hue + 10;
+  sat = !vSat ? pallet[1] : lastBlock.sat + 10;
+  light = !vLight ? pallet[2] : lastBlock.light + 10;
   
-  return { x, y, hue }
+  return { x, y, hue, sat, light }
 }
 
 function drawBlock() {
@@ -167,13 +200,13 @@ function drawBlock() {
       break;
     }
   }
-  if (block.x === 5 || block.x === width - 5 || block.y === 5 || block.y === height - 5) {
+  if (block.x <= 5 || block.x >= width - 5 || block.y <= 5 || block.y >= height - 5) {
     tryAgain = true;
   }
   if (tryAgain && count < 200) {
     count++;
     drawBlock();
-  } else {
+  } else if (!tryAgain) {
     count = 0;
     blocks.push(block)
   }
@@ -182,23 +215,10 @@ function drawBlock() {
 function drawRandom() {
   svg1.innerHTML = '';
   blocks = [];
-
-  const rarityScore = rando(0, 99);
-  let a = 0;
-  let b = 3;
-  if (rarityScore > 69 && rarityScore < 94) {
-    a = 4;
-    b = 5;
-  } else if (rarityScore > 94) {
-    a = 6;
-    b = 6;
-  }
-  console.log(a, b)
   numberOfBlocks = rando(3, maxBlocks);
-  sl = slOpts[rando(0, slOpts.length - 1)];
-  // blockSize = rando(1,10) * 10;
-  // maxBlocksLine = rando(2,15)
-  // numberOfLines = rando(5,5000)
+  // sl = slOpts[rando(0, slOpts.length - 1)];
+  pallet = pallets[rando(0, pallets.length - 1)];
+
   for (let i = 0; i < numberOfBlocks; i++) {
     drawBlock()
   }

@@ -11,9 +11,9 @@ function App() {
       <div id="visual" className="card">
         <div onClick={() => drawRandom()} id="svg54583"></div>
       </div>
-      <nav id="control" className="nav-bottom">
+      {/* <nav id="control" className="nav-bottom">
         <button id="button-instant" className="button" onClick={() => drawRandom()}>GENERATE</button>
-      </nav>
+      </nav> */}
       {/* <div id="visual" class="card">
         <img alt="svg-img" />
       </div> */}
