@@ -16,7 +16,7 @@ const pallets = [
   ['?', 81, 69],
   ['?', 100, 50],
   [235, 0, '?'],
-  [rando(1, 360), '?', '?'],
+  ['X', '?', '?'],
 ];
 
 const eyeColors = [
@@ -30,15 +30,9 @@ export default class ArtEngine {
   constructor(id) {
     this.svgId = id;
     this.svg1 = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    this.height = 12;
-    this.width = 12;
     this.blockSize = 1;
-    this.maxBlocks = (this.width * this.height) / 2;
-    this.numberOfBlocks = rando(3, this.maxBlocks);
-    this.blocks = []
-    this.pallet = pallets[rando(0, pallets.length - 1)];
-    this.eyeColor = this.randoEyes();
     this.frame = 2;
+    this.bgColors = ['#fff', '#000'];
 
     this.svg1.setAttribute('viewBox', `0 0 ${this.width} ${this.height}`);
     this.svg1.setAttribute("version", "1.1");
@@ -87,8 +81,6 @@ export default class ArtEngine {
     return eyeColors[rando(0, eyeColors.length - 2)];
   };
 
-
-
   setEyelid(block, right, isAlien) {
     const eyelid = rect();
     eyelid.setAttribute('x', block.x);
@@ -123,7 +115,7 @@ export default class ArtEngine {
     const bg = rect();
     bg.setAttribute('width', this.width);
     bg.setAttribute('height', this.height);
-    bg.setAttribute('fill', '#fff');
+    bg.setAttribute('fill', this.bg);
     this.svg1.appendChild(bg);
     
     this.blocks.forEach((block, i) => {
@@ -157,12 +149,12 @@ export default class ArtEngine {
     const vSat = this.pallet[1] === '?';
     const vLight = this.pallet[2] === '?';
     if (this.blocks.length === 0) {
-      x = rando(5, this.width - 6);
-      y = rando(5, this.height - 6);
+      x = rando(this.frame, this.width - this.frame);
+      y = rando(this.frame, this.height - this.frame);
 
       hue = vHue ? rando(1, 360) : this.pallet[0];
-      sat = vSat ? rando(1, 100) : this.pallet[1];
-      light = vLight ? rando(0, 100) : this.pallet[2];
+      sat = vSat ? 1 : this.pallet[1];
+      light = vLight ? 1 : this.pallet[2];
 
       return { x, y, hue, sat, light };
     }
@@ -172,9 +164,11 @@ export default class ArtEngine {
     const yOptions = [lastBlock.y + this.blockSize, lastBlock.y - this.blockSize, lastBlock.y];
     x = xOptions[rando(0, 1)]; // rando(0, 1) ? lastBlock.x + blockSize : lastBlock.x - blockSize;
     y = yOptions[rando(0, 1)]; // rando(0, 1) ? lastBlock.y + blockSize : lastBlock.y - blockSize;
-    hue = !vHue ? this.pallet[0] : lastBlock.hue + 10;
-    sat = !vSat ? this.pallet[1] : lastBlock.sat + 10;
-    light = !vLight ? this.pallet[2] : lastBlock.light + 10;
+    hue = !vHue ? this.pallet[0] : lastBlock.hue + (360 / this.numberOfBlocks);
+    sat = !vSat ? this.pallet[1] : lastBlock.sat + (100 / this.numberOfBlocks);
+    light = !vLight ? this.pallet[2] : lastBlock.light + (100 / this.numberOfBlocks);
+    console.log(lastBlock.light);
+    console.log(this.numberOfBlocks);
     
     return { x, y, hue, sat, light }
   }
@@ -207,12 +201,30 @@ export default class ArtEngine {
   drawRandom() {
     this.svg1.innerHTML = '';
     this.blocks = [];
+    this.size = rando(10, 24);
+    this.height = this.size;
+    this.width = this.size;
+    this.blockSize = 1;
+    this.maxBlocks = (this.width * this.height) / 2;
+    this.numberOfBlocks = rando(3, this.maxBlocks);
+    this.blocks = []
+    this.pallet = pallets[rando(0, pallets.length - 1)];
+    if (this.pallet[0] === 'X') this.pallet[0] = rando(1, 360);
+    this.eyeColor = this.randoEyes();
+    this.frame = Math.floor(this.size / 10);
+    this.bg = this.bgColors[0]; //rando(0,1)];
+
+    this.svg1.setAttribute('viewBox', `0 0 ${this.width} ${this.height}`);
 
     for (let i = 0; i < this.numberOfBlocks; i++) {
       this.drawBlock()
     }
     this.drawSvg();
-    return this.svg1;
+
+    return {
+      svg: this.svg1,
+      pallet: this.pallet,
+    };
   }
 }
 
@@ -220,3 +232,7 @@ export default class ArtEngine {
 //   drawRandom,
 //   drawSvg,
 // }
+
+// make other hsl animations
+// try removing the background rect
+// so anim can target rect

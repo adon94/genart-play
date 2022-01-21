@@ -1,6 +1,7 @@
 html, body {
   background: #fff;
-  font-family: "Montserrat", sans-serif;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
   height: 100%;
 }
 

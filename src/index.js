@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import '@fontsource/m-plus-1-code';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
