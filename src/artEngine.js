@@ -13,10 +13,10 @@ const rect = () => document.createElementNS('http://www.w3.org/2000/svg', 'rect'
 // }
 
 const pallets = [
-  ['?', 81, 69],
-  ['?', 100, 50],
-  [235, 0, '?'],
-  ['X', '?', '?'],
+  ['?', 81, 69, 'Pastel'],
+  ['?', 100, 50, 'Pure'],
+  [235, 0, '?', 'Light/Dark'],
+  ['X', '?', '?', 'Saturation/Light'],
 ];
 
 const eyeColors = [

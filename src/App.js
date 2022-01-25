@@ -29,7 +29,7 @@ function App() {
   return (
     <Container>
       <TitleContainer>
-        <h1>???</h1>
+        <h1>Keycard</h1>
       </TitleContainer>
       {/* <nav id="control" className="nav-bottom">
         <button id="button-instant" className="button" onClick={() => drawRandom()}>GENERATE</button>

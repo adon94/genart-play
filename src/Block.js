@@ -32,30 +32,33 @@ const SvgContainer = styled.div`
 
 function Block({ index }) {
   const svgRef = useRef();
-  const [artEngine, setArtEngine] = useState();
+  // const [artEngine, setArtEngine] = useState();
+  const [pallet, setPallet] = useState(null);
   const [anim, setAnim] = useState(null);
   useEffect(() => {
     const ae = new ArtEngine(index);
-    setArtEngine(ae);
-  }, [index]);
+    renderArt(ae);
+  }, []);
 
-  useEffect(() => {
-    renderArt();
-  }, [artEngine]);
+  function renderArt(ae) {
+    const dr = ae.drawRandom();
 
-  function renderArt() {
-    const ae = artEngine?.drawRandom();
-    if (ae) {
+    if (dr) {
       console.log(ae)
-      if (ae.pallet[0] === '?') setAnim(hueAnim);
-      svgRef.current.append(ae.svg);
+      if (dr.pallet[0] === '?') setAnim(hueAnim);
+      svgRef.current.append(dr.svg);
+      // setArtEngine(ae);
+      setPallet(dr.pallet);
     }
   }
 
   return (
+    <div>
+      {pallet && <h1>{pallet[3]}</h1>}
       <Card onClick={() => renderArt()}>
         <SvgContainer ref={svgRef} id={`svg${index}`} anim={anim}></SvgContainer>
       </Card>
+    </div>
   );
 }
 
