@@ -34,16 +34,18 @@ const TitleContainer = styled.div`
 const Button = styled.button`
   margin-top: 20px;
   border: 1px solid black;
-  background-color: white;
+  background-color: #111;
+  color: #fff;
+  border-radius: 2px;
   text-transform: uppercase;
-  padding: 5px 10px;
+  padding: 15px 20px;
   cursor: pointer;
 `;
 
-const gba = 'https://lh3.googleusercontent.com/9SY74GONw-wqgABAm9m3WULDrTFAtVA_eNdxeqtCDEmdzncmaJFU99OrG9OfBbYSCCbXUyml_F15YzSwMcOtG8JuBMHAJ3gJYqq9IC0=w600'
+const ape = 'https://lh3.googleusercontent.com/0wG09LGvYg3w4tw2JtDS-y02wbK250d-ONa0p4i2OPvRW9s29W7hyfvH7DX92yTWxzuDhaLeQ2rISJjPAZtsmSe0RHXKtOz6TmKYTA=w268'
 
 function App() {
-  const [url, setUrl] = useState(gba);
+  const [url, setUrl] = useState(ape);
   const [palette, setPalette] = useState();
   
   const extract = async () => {
@@ -67,7 +69,7 @@ function App() {
       <BlockContainer>
         <ImageInput onChange={({ target: { value }}) => setUrl(value)} value={url}  />
         {url && <img height={300} width="auto" src={url} alt="NFT" />}
-        {url && <Button onClick={extract}>Extract & Generate</Button>}
+        {url && <Button onClick={extract}>Generate</Button>}
         <Block palette={palette} />
       </BlockContainer>
       {/* <BlockGallery /> */}

@@ -7,11 +7,15 @@ const GridContainer = styled.div`
   }
 `
 
+const TextInput = styled.input`
+  padding: 5px 0;
+`;
+
 function ImageInput({ onChange, value }) {
 
   return (
     <GridContainer>
-      <input placeholder='Image address' value={value} onChange={(e) => onChange(e)} />
+      <TextInput placeholder='Image address' value={value} onChange={(e) => onChange(e)} />
     </GridContainer>
   );
 }
