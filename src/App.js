@@ -67,7 +67,7 @@ function App() {
       <BlockContainer>
         <ImageInput onChange={({ target: { value }}) => setUrl(value)} value={url}  />
         {url && <img height={300} width="auto" src={url} alt="NFT" />}
-        {url && <Button onClick={extract}>Extract</Button>}
+        {url && <Button onClick={extract}>Extract & Generate</Button>}
         <Block palette={palette} />
       </BlockContainer>
       {/* <BlockGallery /> */}
