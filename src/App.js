@@ -27,6 +27,10 @@ const BlockContainer = styled.div`
   align-items: center;
 `;
 
+const TitleContainer = styled.div`
+  margin: 5% 10%;
+`
+
 const Button = styled.button`
   margin-top: 20px;
   border: 1px solid black;
@@ -51,9 +55,9 @@ function App() {
 
   return (
     <Container>
-      {/* <TitleContainer>
-        <h1>Keycard</h1>
-      </TitleContainer> */}
+      <TitleContainer>
+        <h1>Sutorōku</h1>
+      </TitleContainer>
       {/* <nav id="control" className="nav-bottom">
         <button id="button-instant" className="button" onClick={() => drawRandom()}>GENERATE</button>
       </nav> */}
