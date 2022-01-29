@@ -1,10 +1,9 @@
-
-
 function rando(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
 const rect = () => document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+const getRgb = (arr) => `rgb(${arr[0]}, ${arr[1]}, ${arr[2]})`;
 
 // function distanceTo({ x: a, y: b },{ x: c, y: d }) {
 //   const distance = Math.sqrt((Math.pow(c-a,2))+(Math.pow(d-b,2)))
@@ -29,11 +28,11 @@ export default class ArtEngine {
 
   constructor(id) {
     this.svgId = id;
-    this.svg1 = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     this.blockSize = 1;
     this.frame = 2;
     this.bgColors = ['#fff', '#000'];
 
+    this.svg1 = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     this.svg1.setAttribute('viewBox', `0 0 ${this.width} ${this.height}`);
     this.svg1.setAttribute("version", "1.1");
     this.svg1.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
@@ -115,7 +114,7 @@ export default class ArtEngine {
     const bg = rect();
     bg.setAttribute('width', this.width);
     bg.setAttribute('height', this.height);
-    bg.setAttribute('fill', this.bg);
+    bg.setAttribute('fill', getRgb(this.bg));
     this.svg1.appendChild(bg);
     
     this.blocks.forEach((block, i) => {
@@ -125,7 +124,7 @@ export default class ArtEngine {
       blck.setAttribute('width', this.blockSize);
       blck.setAttribute('height', this.blockSize);
       blck.setAttribute('id', `block-${i}`);
-      blck.setAttribute('fill', `hsl(${block.hue}, ${block.sat}%, ${block.light}%)`);
+      blck.setAttribute('fill', getRgb(this.palette[rando(1, this.palette.length - 1)]))//`hsl(${block.hue}, ${block.sat}%, ${block.light}%)`);
       // if (block.eye && block.x) {
       //   blck.setAttribute('fill', right ? eyeColor.side : 'black');
       //   setEyelid(block, right, isAlien);
@@ -167,8 +166,6 @@ export default class ArtEngine {
     hue = !vHue ? this.pallet[0] : lastBlock.hue + (360 / this.numberOfBlocks);
     sat = !vSat ? this.pallet[1] : lastBlock.sat + (100 / this.numberOfBlocks);
     light = !vLight ? this.pallet[2] : lastBlock.light + (100 / this.numberOfBlocks);
-    console.log(lastBlock.light);
-    console.log(this.numberOfBlocks);
     
     return { x, y, hue, sat, light }
   }
@@ -198,12 +195,17 @@ export default class ArtEngine {
     }
   }
 
-  drawRandom() {
+  drawRandom(palette) {
+    if (palette) {
+      this.palette = palette;
+      this.bg = palette[0];
+    }
+
     this.svg1.innerHTML = '';
     this.blocks = [];
     this.size = rando(10, 24);
     this.height = this.size;
-    this.width = this.size;
+    this.width = this.size * 3;
     this.blockSize = 1;
     this.maxBlocks = (this.width * this.height) / 2;
     this.numberOfBlocks = rando(3, this.maxBlocks);
@@ -212,7 +214,7 @@ export default class ArtEngine {
     if (this.pallet[0] === 'X') this.pallet[0] = rando(1, 360);
     this.eyeColor = this.randoEyes();
     this.frame = Math.floor(this.size / 10);
-    this.bg = this.bgColors[0]; //rando(0,1)];
+    // this.bg = this.bgColors[0]; //rando(0,1)];
 
     this.svg1.setAttribute('viewBox', `0 0 ${this.width} ${this.height}`);
 
