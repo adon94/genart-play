@@ -21,9 +21,9 @@ export default class ArtEngine {
     this.svg1.setAttribute('fill', 'none');
   }
 
-  brush() {
+  brush(j) {
     const brushStroke = path();
-    const thickness = rando(5, 100);
+    const thickness = this.type === 0 ? rando(50, 70) : rando(10, 30);
     const x1 = rando(60, this.width-60);
     const y1 = rando(20, this.height-20);
     const x2 = rando(60, this.width-60);
@@ -46,7 +46,7 @@ export default class ArtEngine {
     }
 
     brushStroke.setAttribute('d', d);
-    const strokeColor = getRgb(this.palette[rando(1, this.palette.length - 1)])
+    const strokeColor = getRgb(this.palette[j + 2] || this.palette[rando(1, this.palette.length - 1)]);//rando(1, this.palette.length - 1)])
     brushStroke.setAttribute('stroke', strokeColor);
     brushStroke.setAttribute('stroke-width', 1);
     this.svg1.appendChild(brushStroke);
@@ -70,10 +70,12 @@ export default class ArtEngine {
 
     this.setBg();
 
-    this.numElements = rando(1, 10);
+    this.type = rando(0, 1);
+
+    this.numElements = this.type === 0 ? rando(1, 5) : rando(5, 15);
 
     for (let i = 0; i < this.numElements; i++) {
-      this.brush();
+      this.brush(i);
     }
 
     return {

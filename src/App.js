@@ -42,7 +42,7 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const ape = 'https://lh3.googleusercontent.com/0wG09LGvYg3w4tw2JtDS-y02wbK250d-ONa0p4i2OPvRW9s29W7hyfvH7DX92yTWxzuDhaLeQ2rISJjPAZtsmSe0RHXKtOz6TmKYTA=w268'
+const ape = 'https://lh3.googleusercontent.com/bC5u4IOIhZHCK_PYltdh664z5xQ9seAfbY1WMtp5RQ0QK22GLrHbkn16hvnoSV0_wtXGuSJHl3VDNHquGGbdUDyzliyB2NkRAdKfyg=w600'
 
 function App() {
   const [url, setUrl] = useState(ape);

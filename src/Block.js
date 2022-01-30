@@ -33,31 +33,34 @@ const SvgContainer = styled.div`
   } */
 `;
 
-function Block({ index = 'rando', palette }) {
+function Block({ palette }) {
   const svgRef = useRef();
-  // const [artEngine, setArtEngine] = useState();
   useEffect(() => {
     if (palette) {
-      const ae = new ArtEngine(index);
-      renderArt(ae);
+      const ae = new ArtEngine('-container');
+      const dr = ae.drawRandom(palette);
+  
+      if (dr) {
+        svgRef.current.innerHTML = '';
+        svgRef.current.append(dr.svg);
+      }
+      // renderArt(ae);
     }
   }, [palette]);
 
-  function renderArt(ae) {
-    const dr = ae.drawRandom(palette);
+  // function renderArt() {
+  //   const dr = artEngine.drawRandom(palette);
 
-    if (dr) {
-      // if (dr.pallet[0] === '?') setAnim(hueAnim);
-      svgRef.current.innerHTML = '';
-      svgRef.current.append(dr.svg);
-      // setArtEngine(ae);
-    }
-  }
+  //   if (dr) {
+  //     svgRef.current.innerHTML = '';
+  //     svgRef.current.append(dr.svg);
+  //   }
+  // }
 
   return (
     <CardContainer>
-      <Card onClick={() => renderArt()}>
-        <SvgContainer ref={svgRef} id={`svg${index}`}></SvgContainer>
+      <Card>
+        <SvgContainer ref={svgRef} id="svg-container"></SvgContainer>
       </Card>
       {/* <InfoContainer>
         {pallet && <h3>0x11ac128f8b54949c12d04102cfc01960fc496813cbc3495bf77aeed738579738</h3>}
