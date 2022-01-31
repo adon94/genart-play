@@ -19,12 +19,14 @@ const Container = styled.div`
 
 const BlockContainer = styled.div`
   /* max-height: 80vh; */
-  width: 65%;
-  margin: auto;
   padding-bottom: 5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media (min-width: 768px) {
+    width: 65%;
+    margin: auto;
+  }
 `;
 
 const TitleContainer = styled.div`
