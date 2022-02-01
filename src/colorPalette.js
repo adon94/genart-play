@@ -1,13 +1,25 @@
 import { prominent } from 'color.js'
 
+const isSame = (x, y) => {
+  const isClose = (v) => (x[v] + 7 > y[v] && x[v] - 7 < y[v])
+
+  const r = isClose(0);
+  const g = isClose(1);
+  const b = isClose(2);
+
+  return (r && g && b);
+}
+
 const getPalette = async (imgUrl) => {
   const myPromise = new Promise((resolve, reject) => {
     const img = new Image();
     
     img.addEventListener('load', function() {
-      prominent(img, { amount: 5 }).then(color => {
-        console.log(color) // [241, 221, 63]
-        resolve(color);
+      prominent(img, { amount: 10 }).then(palette => {
+        palette.forEach((element, index) => {
+          if (index !== 0 && isSame(palette[0], element)) palette.splice(index, 1);
+        });
+        resolve(palette);
       })
     });
     
