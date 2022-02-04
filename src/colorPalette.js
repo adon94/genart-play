@@ -10,12 +10,13 @@ const isSame = (x, y) => {
   return (r && g && b);
 }
 
-const getPalette = async (imgUrl) => {
+const getPalette = async (imgUrl, amount = 5) => {
   const myPromise = new Promise((resolve, reject) => {
     const img = new Image();
     
     img.addEventListener('load', function() {
-      prominent(img, { amount: 10 }).then(palette => {
+      prominent(img, { amount }).then(palette => {
+        console.log(palette.length)
         palette.forEach((element, index) => {
           if (index !== 0 && isSame(palette[0], element)) palette.splice(index, 1);
         });

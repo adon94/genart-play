@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import ImageInput from './ImageInput';
 import { useState } from 'react';
 import getPalette from './colorPalette';
+// import MakeMinty from './api/minty';
 
 const Container = styled.div`
   /* align-content: center;
@@ -44,17 +45,48 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
+const ImageContainer = styled.div`
+  display: flex;
+`
+
+const PaletteContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+`
+
+const PaletteItem = styled.div`
+  display: flex;
+  flex: 1;
+  width: 100px;
+  height: auto;
+  background-color: ${({ color }) => `rgb(${color[0]},${color[1]},${color[2]})`};
+`
+
 const ape = 'https://lh3.googleusercontent.com/SHOiycapLcGObHoex33iI2d40p4V7xsBNqv_db3wjta7zimyQDwjzn2YxUBGcvc8OBd2b3mWTKQDEnrzoCD4iL58OOdDFW6u9rHT=w335'
 
 function App() {
   const [url, setUrl] = useState(ape);
   const [palette, setPalette] = useState();
+  const [numColors, setNumColors] = useState(3);
   
   const extract = async () => {
     if (url !== '') {
-      const newPal = await getPalette(url);
+      const newPal = await getPalette(url, numColors);
       setPalette(newPal);
     }
+  }
+
+  const onNumColors = async ({ target: { value }}) => {
+    const newPal = await getPalette(url, value);
+    setPalette(newPal);
+    setNumColors(value);
+  }
+
+  const storeImage = async (img) => {
+    console.log(img);
+    // const minty = await MakeMinty()
+    // const nft = await minty.createNFTFromAssetFile(img, { name: '#whatev', description: 'nope' })
   }
 
   return (
@@ -69,10 +101,17 @@ function App() {
         <img alt="svg-img" />
       </div> */}
       <BlockContainer>
-        <ImageInput onChange={({ target: { value }}) => setUrl(value)} value={url}  />
-        {url && <img height={300} width="auto" src={url} alt="NFT" />}
+        <ImageInput onChange={({ target: { value }}) => setUrl(value)} value={url} />
+        <p>{numColors}</p>
+        <input type="range" min={2} max={10} value={numColors} onChange={onNumColors} id="myRange"></input>
+        <ImageContainer>
+          {url && <img height={300} width="auto" src={url} alt="NFT" />}
+          <PaletteContainer>
+            {palette?.length > 0 && palette.map((color) => <PaletteItem color={color} key={color.toString()} />)}
+          </PaletteContainer>
+        </ImageContainer>
         {url && <Button onClick={extract}>Generate</Button>}
-        <Block palette={palette} />
+        <Block palette={palette} sendImage={storeImage} />
       </BlockContainer>
       {/* <BlockGallery /> */}
     </Container>

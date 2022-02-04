@@ -33,7 +33,7 @@ const SvgContainer = styled.div`
   } */
 `;
 
-function Block({ palette }) {
+function Block({ palette, sendImage }) {
   const svgRef = useRef();
   useEffect(() => {
     if (palette) {
@@ -43,10 +43,29 @@ function Block({ palette }) {
       if (dr) {
         svgRef.current.innerHTML = '';
         svgRef.current.append(dr.svg);
+        // toPng(dr.svg)
       }
       // renderArt(ae);
     }
   }, [palette]);
+
+  // function toPng(svg) {
+  //   console.log(svg)
+  //   const svgString = new XMLSerializer().serializeToString(svg); 
+  //   const canvas = document.createElement('canvas')
+  //   const ctx = canvas.getContext("2d");
+  //   var img = new Image();
+  //   var svgBlob = new Blob([svgString], {type: "image/svg+xml;charset=utf-8"});
+  //   var url = URL.createObjectURL(svgBlob);
+  //   img.onload = function() {
+  //     ctx.drawImage(img, 0, 0);
+  //     var png = canvas.toDataURL("image/png");
+  //     // document.querySelector('#png-container').innerHTML = '<img src="'+png+'"/>';
+  //     URL.revokeObjectURL(png);
+  //     sendImage(png);
+  //   };
+  //   img.src = url;
+  // }
 
   // function renderArt() {
   //   const dr = artEngine.drawRandom(palette);
